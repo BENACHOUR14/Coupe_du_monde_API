@@ -1,39 +1,6 @@
-----Sur Windows----
- 
-Pré-requis : 
-Python :
--Installer Python
--Pour vérifier si Python est correctement installé vous pouvez
- exécuter cette commande à partir de votre terminal : 
-*python --version
-
-Environnement virtuel : 
--Créer un dossier pour le projet
-*mkdir CMD
-*cd CMD
-
--Créer l'environnement virtuel lié au projet 
-*python -m venv env
-
--Pour l'activer
-*env\Scripts\activate
-
--Pour le désactiver 
-*deactivate
-
--Installation de Django
-*pip install django
-
-*pip install djangorestframework
-
--Installation de git project
-* git clone https://github.com/BENACHOUR14/Coupe_du_monde_API.git
-
--Migration
-*python manage.py makemigrations
-*python manage.py migrate
-
-
-
-
-
+asgiref==3.5.2
+Django==4.1.4
+djangorestframework==3.14.0
+pytz==2022.6
+sqlparse==0.4.3
+tzdata==2022.7
