@@ -2,6 +2,7 @@
 get_token.py
 
 .clever.json
+db.sqlite3
 
 data/
 
