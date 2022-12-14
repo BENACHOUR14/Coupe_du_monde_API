@@ -16,7 +16,7 @@ class Command(BaseCommand):
             france = Teams.objects.get(name='France')
             argentine = Teams.objects.get(name='Argentine')
             croatie = Teams.objects.get(name='Croatie')
-            Games.objects.create(date=datetime.datetime.now(), is_finished=False, stadium="Bernabeo", home_team=maroc, away_team=france, goal_home_team=None, goal_away_team=None)
-            Games.objects.create(date=datetime.datetime.now(), is_finished=False, stadium="Maracana", home_team=argentine, away_team=croatie, goal_home_team=None, goal_away_team=None)
+            Games.objects.create(date=datetime.datetime.now(), stadium="Bernabeo", home_team=maroc, away_team=france)
+            Games.objects.create(date=datetime.datetime.now(), stadium="Maracana", home_team=argentine, away_team=croatie)
         except Teams.DoesNotExist:
             print("Please Add Teams First")
