@@ -13,11 +13,3 @@ class Command(BaseCommand):
         Teams.objects.create(name='France', group='A', is_eliminated=False)
         Teams.objects.create(name='Argentine', group='C', is_eliminated=False) 
         Teams.objects.create(name='Croitie', group='D', is_eliminated=False)
-        
-         
-        
-
-        
-        
-        
-        
