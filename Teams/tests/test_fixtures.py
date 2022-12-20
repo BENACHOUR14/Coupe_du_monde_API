@@ -1,8 +1,6 @@
 from django.test import TestCase
 from Teams.models import Teams
 from faker import Faker
-import pytest
-from django.db.utils import IntegrityError
 from django.core.management import call_command
 
 class TeamTestCase(TestCase):  
@@ -17,8 +15,6 @@ class TeamTestCase(TestCase):
             call_command('fixture_team')
             self.assertEqual(Teams.objects.count(), 4)
             self.assertTrue(Teams.objects.filter(name='Maroc').exists())
-            self.assertIn('Argentine',list(Teams.objects.all().values_list('name', flat=True)))
+            self.assertEqual([t.name for t in Teams.objects.all().order_by('name')], ['Argentine','Croatie','France','Maroc'])
 
-            # self.assertIsNotNone(Teams.objects.get(name='France'))
-            # self.assertEqual([t.name for t in Teams.objects.all().order_by('name')],  ['Argentine','Croatie','France','Maroc'])
             
