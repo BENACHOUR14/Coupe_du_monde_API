@@ -16,5 +16,6 @@ class TeamTestCase(TestCase):
             self.assertEqual(Teams.objects.count(), 4)
             self.assertTrue(Teams.objects.filter(name='Maroc').exists())
             self.assertEqual([t.name for t in Teams.objects.all().order_by('name')], ['Argentine','Croatie','France','Maroc'])
+            
 
             
