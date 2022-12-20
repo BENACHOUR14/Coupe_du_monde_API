@@ -17,5 +17,3 @@ class TeamTestCase(TestCase):
             self.assertTrue(Teams.objects.filter(name='Maroc').exists())
             self.assertEqual([t.name for t in Teams.objects.all().order_by('name')], ['Argentine','Croatie','France','Maroc'])
             
-
-            
