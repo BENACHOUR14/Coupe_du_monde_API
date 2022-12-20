@@ -13,5 +13,5 @@ class GameTestCase(TestCase):
         GamesFactory.create_batch(faker.random_int(5, 10))
         call_command('fixture_game')
         self.assertEqual(Games.objects.count(), 2)
-        self.assertEqual(Games.objects.filter(away_team=Teams.objects.get(name='France'), home_team=Teams.objects.get(name='Maroc')).count(), 1)
+        self.assertTrue(Games.objects.filter(away_team=Teams.objects.get(name='France'), home_team=Teams.objects.get(name='Maroc')).exists())
         self.assertTrue(Games.objects.filter(away_team=Teams.objects.get(name='Croatie'), home_team=Teams.objects.get(name='Argentine')).exists())
