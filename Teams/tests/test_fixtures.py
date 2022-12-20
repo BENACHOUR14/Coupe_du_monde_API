@@ -22,8 +22,3 @@ class TeamTestCase(TestCase):
             # self.assertIsNotNone(Teams.objects.get(name='France'))
             # self.assertEqual([t.name for t in Teams.objects.all().order_by('name')],  ['Argentine','Croatie','France','Maroc'])
             
-            
-            
-            
-            
-            
