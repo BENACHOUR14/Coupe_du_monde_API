@@ -40,7 +40,7 @@ class TeamViewTest(TestCase):
         client = Client()
         data = {   
             "name": faker.name(),
-            "group": 'H',
+            "group": Teams.Group.H,
             "is_eliminated": faker.boolean()
         }
         response = client.post(

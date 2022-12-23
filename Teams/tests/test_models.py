@@ -7,7 +7,6 @@ from django.db.utils import IntegrityError
 
 class TeamTestCase(TestCase):
     def test_id_unicity(self):
-        
         faker = Faker()
         team1 = Teams.objects.create(id = uuid.uuid4(), name = faker.pystr(), group = Teams.Group.D)
         with pytest.raises(IntegrityError):

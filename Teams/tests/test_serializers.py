@@ -30,3 +30,9 @@ class TeamSerializerTestCase(TestCase):
         serializer = TeamSerializer(data={'name':'Test', 'group':'Z'})
         self.assertFalse(serializer.is_valid())
         self.assertEqual(serializer.errors.get("group")[0].code, "invalid_choice")
+        
+      def test_serializer_required(self):
+        serializer = TeamSerializer(data={})
+        self.assertFalse(serializer.is_valid())
+        self.assertEqual(serializer.errors.get("name")[0].code, "required")
+        self.assertEqual(serializer.errors.get("group")[0].code, "required")
