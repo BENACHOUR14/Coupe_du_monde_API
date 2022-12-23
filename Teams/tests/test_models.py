@@ -5,8 +5,6 @@ from faker import Faker
 import pytest
 from django.db.utils import IntegrityError
 
-
-
 class TeamTestCase(TestCase):
     def test_id_unicity(self):
         
@@ -16,12 +14,5 @@ class TeamTestCase(TestCase):
            Teams.objects.create(id = team1.id, name = faker.pystr(), group = Teams.Group.C)
         
     def test_name_length(self):
-        print("heelo")
         faker = Faker()
         team5 = Teams.objects.create(id = uuid.uuid4(), name = faker.pystr(min_chars=51, max_chars=60), group = 'Z')
-        print(team5.name)
-        print(len(team5.name))
-        print(team5.group)
-
-        
-

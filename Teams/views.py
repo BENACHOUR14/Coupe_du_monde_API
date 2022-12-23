@@ -1,0 +1,23 @@
+from rest_framework import viewsets
+from Teams.serializers import TeamSerializer
+from Teams.models import Teams
+from rest_framework.response import Response
+from Teams.serializers import TeamSerializer
+
+class TeamViewSet(viewsets.ModelViewSet):
+    queryset = Teams.objects
+    serializer_class = TeamSerializer
+    
+    def list(self, request):
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        serializer = self.get_serializer(self.get_object())
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
