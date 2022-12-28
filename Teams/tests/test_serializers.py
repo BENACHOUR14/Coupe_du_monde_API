@@ -13,7 +13,7 @@ class TeamSerializerTestCase(TestCase):
         self.assertEqual(team.group, serializer.data["group"])
         self.assertEqual(team.is_eliminated, serializer.data["is_eliminated"])
         
-      def test_serializer_required_fields(self):
+      def test_serializer_blank_fields(self):
         serializer = TeamSerializer(data={'name': '', 'group': '', 'is_eliminated':''}) 
         self.assertFalse(serializer.is_valid())
         self.assertEqual(serializer.errors.get("name")[0].code, "blank")
@@ -22,14 +22,15 @@ class TeamSerializerTestCase(TestCase):
         
       def test_serializer_unique_fields(self):
         team = TeamsFactory()
-        serializer = TeamSerializer(data={'name': team.name})
+        serializer = TeamSerializer(data={'name':team.name})
         self.assertFalse(serializer.is_valid())
         self.assertEqual(serializer.errors.get("name")[0].code, "unique")
         
       def test_serializer_invalid_fields(self):
-        serializer = TeamSerializer(data={'name':'Test', 'group':'Z'})
+        serializer = TeamSerializer(data={'name':'Test', 'group':'Z', 'is_eliminated':'not_boolean'})
         self.assertFalse(serializer.is_valid())
         self.assertEqual(serializer.errors.get("group")[0].code, "invalid_choice")
+        self.assertEqual(serializer.errors.get("is_eliminated")[0].code, "invalid")
         
       def test_serializer_required(self):
         serializer = TeamSerializer(data={})

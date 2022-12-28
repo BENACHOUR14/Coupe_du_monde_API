@@ -21,7 +21,43 @@ class TeamViewTest(TestCase):
         response = client.get("/Teams/")
         self.assertEqual(len(response.json()), Teams.objects.all().count())
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
+        
+    def test_with_name(self):
+        team1 = TeamsFactory()
+        team2 = TeamsFactory()
+        client = Client()
+        response = client.get(f"/Teams/?kw=name&value={team1.name}")
+        self.assertEqual(len(response.json()), Teams.objects.filter(name=team1.name).count())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_with_group(self):
+        faker = Faker()
+        TeamsFactory.create_batch(faker.random_int(5, 10), group='C')
+        TeamsFactory.create_batch(faker.random_int(5, 10), group='A')
+        client = Client()
+        response = client.get(f"/Teams/?kw=group&value=C")
+        self.assertEqual(len(response.json()), Teams.objects.filter(group='C').count())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_with_is_eliminated(self):
+        faker = Faker()
+        TeamsFactory.create_batch(faker.random_int(5, 10),is_eliminated=False)
+        TeamsFactory.create_batch(faker.random_int(5, 10),is_eliminated=True)
+        client = Client()
+        response = client.get(f"/Teams/?kw=is_eliminated&value=False")
+        self.assertEqual(len(response.json()), Teams.objects.filter(is_eliminated=False).count())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_with_search(self):
+        faker = Faker()
+        team = TeamsFactory(name='Marc')
+        team2 = TeamsFactory(name='Mark')
+        team3 = TeamsFactory(name='Paul')
+        client = Client()
+        namee = team.name[0:3]
+        response = client.get(f"/Teams/?kw=search&value={namee}")
+        self.assertEqual(len(response.json()), Teams.objects.filter(name__startswith=namee).count())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         
     def test_retrieve(self):
         teams = TeamsFactory()
