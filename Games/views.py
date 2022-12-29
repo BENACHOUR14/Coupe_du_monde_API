@@ -6,25 +6,23 @@ from rest_framework.response import Response
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Games.objects
     serializer_class = GamesSerializer
-    
+            
     def list(self, request):
-        kw = request.query_params.get('kw')
-        value = request.query_params.get('value')
-        parametres_possible = ["date", "is_finished", "stadium","home_team","away_team"]
-        arg = {}
-        if kw and value:
-            kws = kw.split("|")
-            values = value.split("|")
-            for i in range(len(kws)):
-                if kws[i] in parametres_possible:
-                    arg[kws[i]] = values[i]
-        if arg:        
-            serializer = self.get_serializer(self.get_queryset().filter(**arg), many=True)
-        else:
-            serializer = self.get_serializer(self.get_queryset(), many=True)
+        qs = self.get_queryset()
+        if request.query_params.get('date'):
+            qs = qs.filter(date=request.query_params.get('date'))          
+        if request.query_params.get('is_finished'):
+            qs = qs.filter(is_finished=request.query_params.get('is_finished'))
+        if request.query_params.get('stadium'):
+            qs = qs.filter(stadium=request.query_params.get('stadium'))
+        if request.query_params.get('home_team'):
+            qs = qs.filter(home_team=request.query_params.get('home_team'))  
+        if request.query_params.get('away_team'):
+            qs = qs.filter(away_team=request.query_params.get('away_team'))             
+        if request.query_params.get('search'):
+            qs = qs.filter(name__contains=request.query_params.get('search'))
+        return Response(self.get_serializer(qs, many=True).data)
         
-        return Response(serializer.data)
-
     def retrieve(self, request, pk=None):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
