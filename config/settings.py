@@ -127,5 +127,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
 
-    'DATETIME_FORMAT': "%m/%d/%Y, %H:%M:%S",
+    # 'DATETIME_FORMAT': "%m/%d/%Y, %H:%M:%S",
 }
