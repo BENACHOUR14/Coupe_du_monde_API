@@ -5,6 +5,8 @@ from Games.models import Games
 from Games.views import GameViewSet
 from rest_framework import status
 from Games.serializers import GamesSerializer
+from Teams.models import Teams
+from Teams.tests.factory import TeamsFactory
 import uuid
 
 class GameViewTest(TestCase):
@@ -80,52 +82,42 @@ class GameViewTest(TestCase):
         client = Client()
         response = client.get(f'/Games/0/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        
-    # def test_create(self):
-    #     faker = Faker()
-    #     client = Client() 
-    #     data={
-    #             'date':'27/12/2022',
-    #             'is_finished':False,
-    #             'stadium':'randomstadium',
-    #             'home_team':{'id':uuid.uuid4(),
-    #                          'name':'Test',
-    #                          'group':'A',
-    #                          'is_eliminated':False},
-    #             'away_team':{'id':uuid.uuid4(),
-    #                         'name':'Test2',
-    #                          'group':'B',
-    #                          'is_eliminated':False},
-    #             'goal_home_team':0,
-    #             'goal_away_team':0
-    #         }
-    #     response = client.post(
-    #         "/Games/",
-    #         data=data,
-    #         content_type="application/json",
-    #     )
-    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    #     self.assertEqual(Games.objects.filter(pk=response.json()['id']).count(), 1)
+                
+    def test_create(self):
+        client = Client()
+        team1 = TeamsFactory() 
+        team2 = TeamsFactory()
+        data={
+                'date':'2022-12-19T15:18:25.616908Z',
+                'is_finished':False,
+                'stadium':'randomstadium',
+                'home_team': team1.id,
+                'away_team': team2.id,
+                'goal_home_team':0,
+                'goal_away_team':0
+            }
+        response = client.post(
+            "/Games/",
+            data=data,
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Games.objects.filter(pk=response.json()['id']).count(), 1)
 
-    # def test_update(self):
-    #     faker = Faker()
-    #     game = GamesFactory()
-    #     data = {
-    #             'date':'27/12/2022',
-    #             'is_finished':False,
-    #             'stadium':'randomstadium',
-    #             'home_team':{'id':uuid.uuid4(),
-    #                          'name':'Test',
-    #                          'group':'A',
-    #                          'is_eliminated':False},
-    #             'away_team':{'id':uuid.uuid4(),
-    #                         'name':'Test2',
-    #                          'group':'B',
-    #                          'is_eliminated':False},
-    #             'goal_home_team':0,
-    #             'goal_away_team':0
-    #         }
-    #     response = self.client.put(f'/Games/{game.id}/', data=data, content_type='application/json')
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     game.refresh_from_db()
-    #     self.assertEqual(game.date, data['date'])
+    def test_update(self):
+        game = GamesFactory()
+        data = {
+                'date':'2022-01-19T15:18:25.616908Z',
+                'is_finished':False,
+                'stadium':'testupdatestadium',
+                'home_team':game.home_team.id,
+                'away_team':game.away_team.id,
+                'goal_home_team':5,
+                'goal_away_team':5
+            }
+        response = self.client.put(f'/Games/{game.id}/', data=data, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        game.refresh_from_db()
+        self.assertEquals(game.stadium, data['stadium'])
+        self.assertEquals(game.goal_home_team, data['goal_home_team'])
+        self.assertEquals(game.goal_away_team, data['goal_away_team'])
