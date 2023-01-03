@@ -16,9 +16,11 @@ Including another URLconf
 from django.urls import path,include
 from rest_framework import routers
 from Teams.urls import router as team_router
+from Games.urls import router as game_router
+
 router = routers.DefaultRouter()
 router.registry.extend(team_router.registry)
-
+router.registry.extend(game_router.registry)
 urlpatterns = [
     path('', include(router.urls))
 ]
